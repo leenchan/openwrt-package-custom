@@ -1,0 +1,20 @@
+#!/bin/sh
+
+MEM_TOTAL=$(free | awk '$0 ~ /Mem/ { print $2/1024 }' | sed 's/\..*//g')
+[ "$MEM_TOTAL" -ge 256 ] && ENABLE=1
+
+uci -q get iperf3-server && {
+	uci -q batch <<-EOF >/dev/null
+		set iperf3-server.@iperf3-server[0]=iperf3-server
+		set iperf3-server.@iperf3-server[0].enable='0'
+		set iperf3-server.@iperf3-server[0].port='5201'
+		set iperf3-server.@iperf3-server[0].main_enable='${ENABLE:-0}'
+		add iperf3-server servers
+		set iperf3-server.@servers[-1].enable_server='1'
+		set iperf3-server.@servers[-1].port='5201'
+		set iperf3-server.@servers[-1].delay='0'
+		commit iperf3-server
+	EOF
+}
+
+exit 0

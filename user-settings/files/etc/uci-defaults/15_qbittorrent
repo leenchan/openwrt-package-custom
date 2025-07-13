@@ -1,0 +1,10 @@
+#!/bin/sh
+
+uci -q get qbittorrent && {
+	uci -q batch <<-EOF >/dev/null
+		set qbittorrent.config.webui_port='30000'
+		commit qbittorrent
+	EOF
+}
+
+exit 0

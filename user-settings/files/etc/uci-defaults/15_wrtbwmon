@@ -1,0 +1,13 @@
+#!/bin/sh
+
+MEM_TOTAL=$(free | awk '$0 ~ /Mem/ { print $2/1024 }' | sed 's/\..*//g')
+[ "$MEM_TOTAL" -ge 256 ] && ENABLE=1
+
+uci -q get wrtbwmon && {
+	uci -q batch <<-EOF >/dev/null
+		set wrtbwmon.general.enabled='${ENABLE:-0}'
+		commit wrtbwmon
+	EOF
+}
+
+exit 0

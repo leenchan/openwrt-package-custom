@@ -1,0 +1,12 @@
+{
+	"admin/services/qbittorrent": {
+		"title": "qBittorrent",
+		"action": {
+			"type": "view",
+			"path": "qbittorrent-bin"
+		},
+		"depends": {
+			"acl": [ "luci-app-qbittorrent-bin" ]
+		}
+	}
+}

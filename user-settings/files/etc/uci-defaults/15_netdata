@@ -1,0 +1,14 @@
+#!/bin/sh
+
+uci -q get netdata && {
+    [ -x "/etc/init.d/netdata" ] && /etc/init.d/netdata disable
+}
+
+# pidof netdata && killall netdata
+
+# find /etc/rc.d -name *netdata* | while read FILE
+# do
+#     rm -f "$FILE"
+# done
+
+exit 0

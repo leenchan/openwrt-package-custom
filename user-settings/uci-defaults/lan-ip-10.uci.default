@@ -1,0 +1,10 @@
+#!/bin/sh
+
+uci -q get network && {
+	uci -q batch <<-EOF >/dev/null
+		set network.lan.ipaddr='192.168.10.1'
+		commit network
+	EOF
+}
+
+exit 0

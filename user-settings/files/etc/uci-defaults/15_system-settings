@@ -1,0 +1,23 @@
+#!/bin/sh
+
+BOARD_MODEL=$(cat /etc/board.json | jq -r '.model.name' | sed -E -e 's/(cmcc\s+|[a-z]+\s+version)//gi' -e 's/(^\s+|\s+$)//g' -e 's/\(\s*\)//g' -e 's/(^\s+|\s+$)//g'  -e 's/\s+/_/g')
+# LOG_FILE=/system.log
+# echo "BOARD_MODEL:${BOARD_MODEL}" > $LOG_FILE
+# echo "" >> $LOG_FILE
+# ls -ahl /etc >> $LOG_FILE
+# echo "" >> $LOG_FILE
+# uci show system >> $LOG_FILE
+
+[ -z "$BOARD_MODEL" ] || echo "$BOARD_MODEL" > /proc/sys/kernel/hostname
+
+uci -q get system && {
+	uci -q batch <<-EOF >/dev/null
+		set system.@system[0].zonename='Asia/Shanghai'
+		set system.@system[0].timezone='CST-8'
+		set system.@system[0].hostname='${BOARD_MODEL:-OpenWrt}'
+		commit system
+	EOF
+	/etc/init.d/system restart
+}
+
+exit 0

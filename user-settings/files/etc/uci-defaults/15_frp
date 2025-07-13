@@ -1,0 +1,11 @@
+#!/bin/sh
+
+uci -q get frpc && {
+    [ -x "/etc/init.d/frpc" ] && /etc/init.d/frpc disable
+}
+
+uci -q get frps && {
+    [ -x "/etc/init.d/frps" ] && /etc/init.d/frps disable
+}
+
+exit 0

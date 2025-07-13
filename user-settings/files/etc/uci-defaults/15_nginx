@@ -1,0 +1,19 @@
+#!/bin/sh
+
+uci -q get nginx && {
+	# Disable uhttpd
+	while read F
+	do
+		[ -f "$F" ] && rm "$F"
+	done <<-EOF
+	$(find /etc | grep uhttpd)
+	EOF
+	pidof uhttpd && killall uhttpd
+	uci -q batch <<-EOF >/dev/null
+		delete nginx._redirect2ssl.return
+		set nginx._redirect2ssl.include='conf.d/*.locations'
+		commit nginx
+	EOF
+}
+
+exit 0

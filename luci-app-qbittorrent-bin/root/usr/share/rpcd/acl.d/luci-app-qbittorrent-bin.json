@@ -1,0 +1,20 @@
+{
+	"luci-app-qbittorrent-bin": {
+		"description": "Grant access to qBittorrent",
+		"read": {
+			"cgi-io": [ "exec" ],
+			"file": {
+				"*/netstat": [ "exec" ],
+				"*/qbittorrent-bin": [ "exec" ],
+				"*/qBittorrent*.conf": [ "read" ],
+				"/etc/passwd": ["read"],
+				"/usr/share/qbittorrent/*": ["read"]
+			},
+			"uci": [ "qbittorrent-bin" ]
+		},
+		"write": {
+			"uci": [ "qbittorrent-bin" ]
+		}
+	}
+}
+

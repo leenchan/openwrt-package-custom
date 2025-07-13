@@ -1,0 +1,7 @@
+#!/bin/sh
+
+uci -q get tailscale && {
+    [ -x "/etc/init.d/tailscale" ] && /etc/init.d/tailscale disable
+}
+
+exit 0

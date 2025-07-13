@@ -1,0 +1,12 @@
+#!/bin/sh
+
+uci -q get ttyd && {
+	uci -q batch <<-EOF >/dev/null
+		set ttyd.@ttyd[0].interface='127.0.0.1'
+		commit ttyd
+	EOF
+	sed -Ei "s/hostname\s*\+\s*':'\s*\+\s*port/host + '\/ttyd\/'/g" /www/luci-static/resources/view/ttyd/term.js
+
+}
+
+exit 0
