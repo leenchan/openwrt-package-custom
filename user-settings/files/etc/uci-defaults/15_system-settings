@@ -3,7 +3,7 @@
 BOARD_MODEL=$(cat /etc/board.json | \
 	jq -r '.model.name' | \
 	sed -E \
-	-e 's/(cmcc\s+|[a-z]+\s+version|_ubi.*)//gi' \
+	-e 's/(cmcc\s+|[a-z]+\s+version|ubi.*)//gi' \
 	-e 's/(^\s+|\s+$)//g' \
 	-e 's/\(\s*\)//g' \
 	-e 's/(^\s+|\s+$)//g' \
