@@ -1,3 +1,9 @@
 [submodule "nethogs"]
 	path = nethogs
 	url = https://github.com/sbwml/package_new_nethogs.git
+[submodule "luci-app-qosmate"]
+	path = luci-app-qosmate
+	url = https://github.com/hudra0/luci-app-qosmate.git
+[submodule "qosmate"]
+	path = qosmate
+	url = https://github.com/hudra0/qosmate.git
