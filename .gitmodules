@@ -7,3 +7,6 @@
 [submodule "qosmate"]
 	path = qosmate
 	url = https://github.com/hudra0/qosmate.git
+[submodule "quickfile"]
+	path = quickfile
+	url = https://github.com/sbwml/luci-app-quickfile.git
