@@ -1,0 +1,3 @@
+[submodule "nethogs"]
+	path = nethogs
+	url = https://github.com/sbwml/package_new_nethogs.git
