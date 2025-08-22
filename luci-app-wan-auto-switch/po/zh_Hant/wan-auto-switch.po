@@ -1,0 +1,11 @@
+msgid "WAN Auto-Switch"
+msgstr “WAN 自動切換"
+
+msgid "Restart WAN"
+msgstr "重啟 WAN"
+
+msgid "WAN Protocol Templates"
+msgstr "WAN 模板"
+
+msgid "Add Template"
+msgstr "設置"

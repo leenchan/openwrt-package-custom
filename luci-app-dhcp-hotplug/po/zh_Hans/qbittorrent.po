@@ -1,0 +1,2 @@
+msgid "WebUI Port"
+msgstr "WebUI 端口"
