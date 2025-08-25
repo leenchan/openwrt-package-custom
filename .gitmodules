@@ -10,3 +10,6 @@
 [submodule "quickfile"]
 	path = quickfile
 	url = https://github.com/sbwml/luci-app-quickfile.git
+[submodule "nikki"]
+	path = nikki
+	url = https://github.com/nikkinikki-org/OpenWrt-nikki.git
