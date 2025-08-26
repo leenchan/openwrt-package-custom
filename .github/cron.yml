@@ -1,7 +1,5 @@
 name: Update packages
 
-env:
-  ONLY_UPDATE: true
 on:
   workflow_dispatch:
   schedule:
