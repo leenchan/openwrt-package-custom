@@ -22,30 +22,35 @@ define Package/user-settings
   PKGARCH:=all
 endef
 
-define Package/user-settings-lan-ip-6
-  SECTION:=Custom
-  CATEGORY:=Extra packages
-  TITLE:=User Network Lan 192.168.6.1
-  MAINTAINER:=leen
-  PKGARCH:=all
+lan_ip_packages:=
+define LanIpPackageTemplate
+  define Package/user-settings-lan-ip-$(1)
+    SECTION:=Custom
+    CATEGORY:=Extra packages
+    TITLE:=User Network Lan 192.168.$(1).1
+    MAINTAINER:=leen
+    PKGARCH:=all
+  endef
+
+  define Package/user-settings-lan-ip-$(1)/install
+	$(INSTALL_DIR) $(1)/etc/uci-defaults
+  cat <<-EOF > $(1)/etc/uci-defaults/12_network-lan-ip-$(1)
+  #!/bin/sh
+  uci -q get network && {
+    uci -q batch <<-EOF >/dev/null
+      set network.lan.ipaddr='192.168.$(1).1'
+      commit network
+    EOF
+  }
+  EOF
+  endef
+
+  lan_ip_packages+=user-settings-lan-ip-$(1)
 endef
 
-define Package/user-settings-lan-ip-10
-  SECTION:=Custom
-  CATEGORY:=Extra packages
-  TITLE:=User Network Lan 192.168.10.1
-  MAINTAINER:=leen
-  PKGARCH:=all
-endef
-
-define Package/user-settings-lan-ip-100
-  SECTION:=Custom
-  CATEGORY:=Extra packages
-  TITLE:=User Network Lan 192.168.100.1
-  MAINTAINER:=leen
-  PKGARCH:=all
-endef
-#   DEPENDS:=+base-files
+$(foreach p,1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 101 102 200,\
+  $(eval $(call LanIpPackageTemplate,$(p)))
+)
 
 define Package/user-settings/conffiles
 /etc/config/
@@ -65,22 +70,7 @@ define Package/user-settings/install
 	$(CP) ./files/* $(1)/
 endef
 
-define Package/user-settings-lan-ip-6/install
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./uci-defaults/lan-ip-6.uci.default $(1)/etc/uci-defaults/12_network-lan-ip-6
-endef
-
-define Package/user-settings-lan-ip-10/install
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./uci-defaults/lan-ip-10.uci.default $(1)/etc/uci-defaults/12_network-lan-ip-10
-endef
-
-define Package/user-settings-lan-ip-100/install
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-	$(INSTALL_BIN) ./uci-defaults/lan-ip-100.uci.default $(1)/etc/uci-defaults/12_network-lan-ip-100
-endef
-
 $(eval $(call BuildPackage,user-settings))
-$(eval $(call BuildPackage,user-settings-lan-ip-6))
-$(eval $(call BuildPackage,user-settings-lan-ip-10))
-$(eval $(call BuildPackage,user-settings-lan-ip-100))
+$(foreach p,$(lan_ip_packages),\
+  $(eval $(call BuildPackage,$(p)))\
+)
