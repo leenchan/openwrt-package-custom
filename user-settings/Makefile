@@ -33,24 +33,14 @@ define LanIpPackageTemplate
   endef
 
   define Package/user-settings-lan-ip-$(1)/install
-	$(INSTALL_DIR) $(1)/etc/uci-defaults
-  cat <<-EOF > $(1)/etc/uci-defaults/12_network-lan-ip-$(1)
-  #!/bin/sh
-  uci -q get network && {
-    uci -q batch <<-EOF >/dev/null
-      set network.lan.ipaddr='192.168.$(1).1'
-      commit network
-    EOF
-  }
-  EOF
+	$(INSTALL_DIR) $$(1)/etc/uci-defaults
+	echo -e "#!/bin/sh\nuci -q get network && {\n	uci -q batch <<-EOF >/dev/null\n	set network.lan.ipaddr='192.168.$(1).1'\n	commit network\n	EOF\n}\n" > $$(1)/etc/uci-defaults/12_network-lan-ip-$(1)
   endef
 
   lan_ip_packages+=user-settings-lan-ip-$(1)
 endef
 
-$(foreach p,1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 101 102 200,\
-  $(eval $(call LanIpPackageTemplate,$(p)))
-)
+$(foreach p,1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100 101 200,$(eval $(call LanIpPackageTemplate,$(p))))
 
 define Package/user-settings/conffiles
 /etc/config/
@@ -71,6 +61,4 @@ define Package/user-settings/install
 endef
 
 $(eval $(call BuildPackage,user-settings))
-$(foreach p,$(lan_ip_packages),\
-  $(eval $(call BuildPackage,$(p)))\
-)
+$(foreach p,$(lan_ip_packages),$(eval $(call BuildPackage,$(p))))
